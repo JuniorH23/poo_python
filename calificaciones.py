@@ -12,12 +12,14 @@ class Estudiante:
     identificacion: int
     nombre: str
     semestre: str
+    edad:int
     calificaciones: list[float]
 
     def __init__(self, identificacion: int, nombre: str, semestre: str, calificaciones: list[float]):
         self.identificacion = identificacion
         self.nombre = nombre
         self.semestre = semestre
+
         self.calificaciones = calificaciones
 
     def obtener_promedio(self):
