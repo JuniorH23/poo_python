@@ -1,60 +1,32 @@
 class Estudiante:
-    """
-    Representa a un estudiante con información académica básica.
+        identificacion:int
+        nombre: str
+        semestre: str
+        calificaciones: list[float]
 
-    Atributos:
-        identificacion (int): Número único que identifica al estudiante.
-        nombre (str): Nombre completo del estudiante.
-        semestre (str): Semestre actual que cursa el estudiante.
-        calificaciones (list[float]): Lista de calificaciones obtenidas por el estudiante.
-    """
-    
-    identificacion: int
-    nombre: str
-    semestre: str
-    edad:int
-    calificaciones: list[float]
+        def __init__(self, identificacion, nombre, semestre, calificaciones):
+            self.identificacion = identificacion
+            self.nombre = nombre
+            self.semestre = semestre
+            self.calificaciones = calificaciones
 
-    def __init__(self, identificacion: int, nombre: str, semestre: str, calificaciones: list[float]):
-        self.identificacion = identificacion
-        self.nombre = nombre
-        self.semestre = semestre
+        def obtener_promedio(self):
+            if not self.calificaciones:
+                return 0.0
+            return sum(self.calificaciones) / len(self.calificaciones)
 
-        self.calificaciones = calificaciones
-
-    def obtener_promedio(self):
-        """
-        Calcula y retorna el promedio de las calificaciones del estudiante.
-
-        Returns:
-            float: Promedio de las calificaciones.
-
-        Raises:
-            ValueError: Si la lista de calificaciones está vacía.
-        """
-        if not self.calificaciones:
-            raise ValueError("El estudiante no tiene calificaciones registradas.")
-        return sum(self.calificaciones) / len(self.calificaciones)
-
-    def ver_informacion(self):
-        """
-        Retorna la información general del estudiante en formato texto.
-
-        Returns:
-            str: Cadena con la identificación, nombre, semestre y promedio del estudiante.
-        """
-        promedio = self.obtener_promedio() if self.calificaciones else 0.0
-        return (
+        def ver_informacion(self):
+            promedio = self.obtener_promedio()
+            return (
             f"ID: {self.identificacion}\n"
             f"Nombre: {self.nombre}\n"
             f"Semestre: {self.semestre}\n"
             f"Promedio: {promedio:.2f}"
         )
 
-#estudiantes = []
 estudiantes: list[Estudiante] = []
 while True:
-    print("1. Agregar estudiante")
+    print("\n1. Agregar estudiante")
     print("2. Ver promedio estudiante")
     print("3. Ver información de un estudiante")
     print("4. Salir")
@@ -72,21 +44,23 @@ while True:
             notas.append(nota)
         estudiante = Estudiante(identificacion, nombre, semestre, notas)
         estudiantes.append(estudiante)
-        
+
     elif opcion == "2" or opcion == "3":
-        identificacion = int(input("Ingrese la identificación del estudiante: "))
-        for estudiante in estudiantes:
-            if estudiante.identificacion == identificacion and opcion == "2":
-                print(f"Estudiante: {estudiante.nombre}")
-                print(f"Promedio: {estudiante.obtener_promedio()}")
+        id_buscar = int(input("Ingrese la identificación del estudiante: "))
+        encontrado = False
+        for est in estudiantes:
+            if est.identificacion == id_buscar:
+                if opcion == "2":
+                    print(f"Promedio: {est.obtener_promedio():.2f}")
+                else:
+                    print("\n--- Información del Estudiante ---")
+                    print(est.ver_informacion())
+                encontrado = True
                 break
-            elif estudiante.identificacion == identificacion and opcion == "3":
-                estudiante.ver_informacion()
+            if not encontrado:
+                print("Estudiante no encontrado.")
+
+            elif opcion == "4":
                 break
         else:
-            print("Estudiante no encontrado.")
-    
-    elif opcion == "4":
-        break
-    else:
-        print("Opción no válida. Intente nuevamente.")
+            print("Opción no válida. Intente nuevamente.")
